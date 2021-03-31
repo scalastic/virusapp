@@ -3,7 +3,6 @@ package io.scalastic.coronapubsub.virusapp.sub;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.scalastic.coronapubsub.virusapp.model.Human;
-import io.scalastic.coronapubsub.virusapp.pub.RedisHumanPublisher;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Service;
