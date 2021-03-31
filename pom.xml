@@ -11,7 +11,7 @@
 
 	<groupId>io.scalastic.coronapubsub</groupId>
 	<artifactId>virusapp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>virusapp</name>
 	<description>Demo project for hotspot vs native conquest </description>
 
