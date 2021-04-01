@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.scalastic.coronapubsub.virusapp.model.Human;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RedisHumanSubscriber implements MessageListener {
 
     ObjectMapper objectMapper = new ObjectMapper();
+
+    StringRedisSerializer serializer = new StringRedisSerializer();
 
     @Override
     public void onMessage(Message message, byte[] bytes) {

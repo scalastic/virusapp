@@ -3,14 +3,15 @@ package io.scalastic.coronapubsub.virusapp.config;
 import io.scalastic.coronapubsub.virusapp.model.Human;
 import io.scalastic.coronapubsub.virusapp.pub.RedisHumanPublisher;
 import io.scalastic.coronapubsub.virusapp.sub.RedisHumanSubscriber;
-import org.apache.commons.pool2.impl.DefaultEvictionPolicy;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -24,7 +25,7 @@ import java.util.concurrent.Executors;
 @Configuration
 @PropertySource(name = "application", value = "classpath:application.properties")
 @ComponentScan("io.scalastic.coronapubsub.virusapp")
-@TypeHint(types = {GenericToStringSerializer.class, Human.class, DefaultEvictionPolicy.class}, typeNames = {"redis.clients.jedis.Queable", "redis.clients.jedis.Builder"})
+@TypeHint(types = {Human.class})
 public class RedisHumanConfig {
 
     @Resource
@@ -36,20 +37,20 @@ public class RedisHumanConfig {
     }
 
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory redis = new JedisConnectionFactory();
-        redis.setHostName(environment.getProperty("spring.redis.host"));
-        redis.setPort(environment.getProperty("spring.redis.port", Integer.class));
-        redis.setUsePool(true);
-        redis.afterPropertiesSet();
-        return redis;
-    }
+    public LettuceConnectionFactory lettuceConnectionFactory() {
 
+        LettuceConnectionFactory lettuceconnectionFactory = new LettuceConnectionFactory(
+                new RedisStandaloneConfiguration(
+                        environment.getProperty("spring.redis.host"),
+                        environment.getProperty("spring.redis.port", Integer.class)));
+        lettuceconnectionFactory.afterPropertiesSet();
+        return lettuceconnectionFactory;
+    }
 
     @Bean
     public RedisTemplate redisTemplate() {
         final RedisTemplate template = new RedisTemplate();
-        template.setConnectionFactory(jedisConnectionFactory());
+        template.setConnectionFactory(lettuceConnectionFactory());
         template.setValueSerializer(new GenericToStringSerializer(Object.class));
         return template;
     }
@@ -62,7 +63,7 @@ public class RedisHumanConfig {
     @Bean
     RedisMessageListenerContainer redisContainer() {
         final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(jedisConnectionFactory());
+        container.setConnectionFactory(lettuceConnectionFactory());
         container.addMessageListener(messageListener(), topic());
         container.setTaskExecutor(Executors.newCachedThreadPool());
         return container;
