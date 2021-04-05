@@ -2,7 +2,7 @@
 
 ## Presentation
 
-This a POC demonstrating the `spring-native` v`0.9.1` ability to compile and drive a not so-simple application. 
+This is a POC demonstrating the `spring-native` v`0.9.1` ability to compile and drive a not so-simple application. 
 The code includes a Publisher/Subscriber implementation on a Redis queue and is intended to run on both `HotSpot` JVM and `Substrate` VM a.k.a Bytecode and native.
 
 Both compilation types are proposed, and startup tests are done.
@@ -73,7 +73,7 @@ End!!
 
 - Starts the pub/sub app :
 ```
-% docker run --rm -it --name virus-app --network pubsub-network virusapp:0.0.1-SNAPSHOT
+% docker run --rm -it --name virus-app --network pubsub-network virusapp:0.0.1-lettuce
 ```
 
 - Expected output :

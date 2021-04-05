@@ -11,7 +11,7 @@
 
 	<groupId>io.scalastic.coronapubsub</groupId>
 	<artifactId>virusapp</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-lettuce</version>
 	<name>virusapp</name>
 	<description>Demo project for hotspot vs native conquest </description>
 
@@ -91,6 +91,7 @@
 						<builder>paketobuildpacks/builder:tiny</builder>
 						<env>
 							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--verbose</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
 				</configuration>
@@ -99,6 +100,9 @@
 				<groupId>org.springframework.experimental</groupId>
 				<artifactId>spring-aot-maven-plugin</artifactId>
 				<version>${spring-native.version}</version>
+				<configuration>
+					<debugVerify>true</debugVerify>
+				</configuration>
 				<executions>
 					<execution>
 						<id>test-generate</id>

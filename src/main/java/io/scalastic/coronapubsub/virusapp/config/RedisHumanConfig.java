@@ -52,6 +52,7 @@ public class RedisHumanConfig {
         final RedisTemplate template = new RedisTemplate();
         template.setConnectionFactory(lettuceConnectionFactory());
         template.setValueSerializer(new GenericToStringSerializer(Object.class));
+        template.afterPropertiesSet();
         return template;
     }
 

@@ -23,18 +23,16 @@ public class RedisHumanPublisher {
     }
 
     public RedisHumanPublisher(RedisTemplate redisTemplate, ChannelTopic topic) {
-        redisTemplate.afterPropertiesSet();
         this.redisTemplate = redisTemplate;
         this.topic = topic;
     }
 
     public void publish(Human human) {
-
         try {
             redisTemplate.convertAndSend(topic.getTopic(), objectMapper.writeValueAsString(human));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        System.out.println("Published " + human);
+        System.out.println("1. Published " + human);
     }
 }

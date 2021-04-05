@@ -20,12 +20,12 @@ public class RedisHumanSubscriber implements MessageListener {
         Human human = null;
         try {
             human = objectMapper.readValue(message.toString(), Human.class);
+            System.out.println("2. Received " + human.toString());
             human.setIsInfected(!human.getIsVaccinated());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Subscribed " + message.toString());
-        System.out.println("Transformed " + human.toString());
+        System.out.println("3. Transformed " + human.toString());
     }
 }
