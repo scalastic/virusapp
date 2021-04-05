@@ -1,5 +1,6 @@
 package io.scalastic.coronapubsub.virusapp.config;
 
+import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 import io.scalastic.coronapubsub.virusapp.model.Human;
 import io.scalastic.coronapubsub.virusapp.pub.RedisHumanPublisher;
 import io.scalastic.coronapubsub.virusapp.sub.RedisHumanSubscriber;
@@ -17,6 +18,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.nativex.hint.ProxyHint;
 import org.springframework.nativex.hint.TypeHint;
 
 import javax.annotation.Resource;
@@ -25,7 +27,17 @@ import java.util.concurrent.Executors;
 @Configuration
 @PropertySource(name = "application", value = "classpath:application.properties")
 @ComponentScan("io.scalastic.coronapubsub.virusapp")
-@TypeHint(types = {Human.class})
+/*@ProxyHints(value = {
+        @ProxyHint(typeNames = {"io.lettuce.core.api.sync.RedisCommands", "io.lettuce.core.cluster.api.sync.RedisClusterCommands"}),
+        @ProxyHint(typeNames = {"io.lettuce.core.pubsub.api.sync.RedisPubSubCommands"})
+})
+@TypeHints(value = {
+        @TypeHint(types = { Human.class }),
+        @TypeHint(typeNames = "io.lettuce.core.event.connection.JfrConnectionCreatedEvent",
+                 methods = @MethodHint( Flag.allDeclaredConstructors ))
+})*/
+@TypeHint(types = {GenericToStringSerializer.class, Human.class})
+@ProxyHint(types= { RedisPubSubCommands.class })
 public class RedisHumanConfig {
 
     @Resource
